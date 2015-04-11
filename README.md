@@ -2,9 +2,9 @@
 
 #ToDo
 
-Add project to Github
-Install Composer
-Install PHPSpec
+Add project to Github - done
+Install Composer - done
+Install PHPSpec - done
 
 # Set up Coin Toss program
 
@@ -22,10 +22,10 @@ Install PHPSpec
     - It should be possible for any two player in different teams to have the possibility of being paired
 
 
-- Coin Toss has 51 players [player1, player2, player3...]
+- Coin Toss has 51 players [player1, player2, player3...] done
 
-- Each player belongs to a team
-    - There are 8 teams
-    - Each team has a color [Red, yellow, Green, Blue, Orange, Pink, Black and White]
+- Each player belongs to a team done
+    - There are 8 teams done
+    - Each team has a color [Red, yellow, Green, Blue, Orange, Pink, Black and White] done
 
 -
