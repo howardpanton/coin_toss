@@ -1,0 +1,22 @@
+{
+    "require": {
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "codeception/codeception": "*",
+        "phpspec/phpspec": "~2.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "src/",
+            "stats": "",
+            "Codeception": "src",
+            "PhpSpec": "src/"
+        }
+    }
+}
+
+
