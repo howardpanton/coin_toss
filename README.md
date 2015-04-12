@@ -30,6 +30,8 @@ Install PHPSpec - done
 
 -
 
-Have to use a recursuve function to check whether mactehs can be player
+Have to use a recursuve function to check whether matches can be player
 
 - Maybe Factory model will be better, we can create Competition and play matches using a new object
+
+- Main issue was the check to see if two player have already played, this wast causing error
