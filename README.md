@@ -15,10 +15,10 @@ Install PHPSpec - done
 
     Restrictions
 
-    - Each player can  only play one match per round
-    - No matched pair can be from the same team
+    - Each player can  only play one match per round done
+    - No matched pair can be from the same team done
     - No matched pair can be a repeat of the previous round's fixture
-    - The process for creating matches should be random
+    - The process for creating matches should be random done
     - It should be possible for any two player in different teams to have the possibility of being paired
 
 
@@ -29,3 +29,7 @@ Install PHPSpec - done
     - Each team has a color [Red, yellow, Green, Blue, Orange, Pink, Black and White] done
 
 -
+
+Have to use a recursuve function to check whether mactehs can be player
+
+- Maybe Factory model will be better, we can create Competition and play matches using a new object
