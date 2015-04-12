@@ -34,4 +34,13 @@ Have to use a recursuve function to check whether matches can be player
 
 - Maybe Factory model will be better, we can create Competition and play matches using a new object
 
-- Main issue was the check to see if two player have already played, this wast causing error
+- Main issue was the check to see if two player have already played, this wast causing error with the function recursion
+
+I ran into problems trying to make sure that each match was contested by different teams who havent previously played.
+I had to create two arrays one to hold the previously played games from the last round and another to hold each player who has played already.
+This caused some more issues and I refactored the way in whcih each game was generated.
+
+I changed from using rand() to array_rand(), this allowed me to create an array of 51 players. When a game was being set the methid would take a random plater number from the draw.
+After they have been drawn the player numbers would be unset to stop them being drawn again in the round.
+
+To fix the error with multiple nesting of functions I moved some of the methods into a match Class, the CoinToss Class is then used to create new matches.
