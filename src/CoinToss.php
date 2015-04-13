@@ -216,7 +216,9 @@ class Match extends CoinToss
 
     /**
      * @param $players
-     *
+     * @param $max_players
+     * @param $competitors
+     * @param $rounds
      */
     function __construct($players, $max_players, $competitors, $rounds) {
 
@@ -230,14 +232,14 @@ class Match extends CoinToss
             $this->match_array[] = $number;
         }
 
-
+        // PLay new match
         $this->new_match();
         //var_dump($this->previous_round);
     }
 
 
     /**
-     *
+     * remove previous round array
      */
     function __destruct() {
         unset($this->previous_round);
@@ -250,6 +252,7 @@ class Match extends CoinToss
      */
     public function playMatch($match_1, $match_2)
     {
+
         $array = array("player1" => $this->players[$match_1]["name"], "player1_nicename" => $this->players[$match_1]["nice_name"], "player1_team" => $this->players[$match_1]["teams"], "player_1_toss" => $this->tossCoin(rand(0,1)),"player2" => $this->players[$match_2]["name"], "player2_nicename" => $this->players[$match_2]["nice_name"], "player2_team" => $this->players[$match_2]["teams"], "player_2_toss" => $this->tossCoin(rand(0,1)) );
         $this->previous_round[] = $this->players[$match_1]["name"]. "Vs" .$this->players[$match_2]["name"];
         return $array;
@@ -277,6 +280,7 @@ class Match extends CoinToss
 
     /**
      * @return array
+     * Use this to store previous round matches
      */
     public function previous_round()
     {

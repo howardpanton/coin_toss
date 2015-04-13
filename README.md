@@ -44,3 +44,11 @@ I changed from using rand() to array_rand(), this allowed me to create an array 
 After they have been drawn the player numbers would be unset to stop them being drawn again in the round.
 
 To fix the error with multiple nesting of functions I moved some of the methods into a match Class, the CoinToss Class is then used to create new matches.
+
+Still to do
+
+- Allow for more that 51 players without getting nesting errors.
+- Allow for matches with more that 2 players to be displayed
+- Refactor code to remove duplication
+- Add more tests, this is still incomplete
+
