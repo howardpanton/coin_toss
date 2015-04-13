@@ -38,10 +38,12 @@ class CoinToss
 
     public $rounds;
 
+    public $no_of_teams;
+
 //    const ROUNDS = 6;
 
 
-    function __construct($max_players, $competitors, $rounds) {
+    function __construct($max_players, $competitors, $rounds, $no_of_teams) {
 
 
         $this->max_players = $max_players;
@@ -50,9 +52,12 @@ class CoinToss
 
         $this->rounds = $rounds;
 
+        $this->no_of_teams = $no_of_teams;
+
         // Create 8 teams
         $this->createTeams();
 
+        //var_dump($this->teams);
         // Create 51 players
         $this->createPlayers();
 
@@ -61,17 +66,79 @@ class CoinToss
 
         // Output the results in a table
         $this->outputResults();
+        $fp = fopen('results.json', 'w');
+        fwrite($fp, json_encode($this->results));
+        fclose($fp);
+
 
     }
 
 
     /**
-     * Create the Teams
+     *
      */
     public function createTeams()
     {
-        $this->teams = array('Red', 'Yellow','Green','Blue','Orange','Pink','Black','White');
+        // Used to assign Team colors
+
+        $colors = array (
+        "Red",
+        "Yellow",
+        "Green",
+        "Blue",
+        "Orange",
+        "Pink",
+        "Black",
+        "White",
+		"Navy",
+		"DarkBlue" ,
+		"MediumBlue",
+		"Blue" ,
+		"DarkGreen" ,
+		"Green" ,
+		"Teal",
+		"DarkCyan",
+		"DeepSkyBlue",
+		"DarkTurquoise",
+		"MediumSpringGreen",
+		"Lime",
+		"SpringGreen",
+		"Aqua",
+		"Cyan",
+		"MidnightBlue",
+		"DodgerBlue",
+		"LightSeaGreen",
+		"ForestGreen",
+		"SeaGreen",
+		"DarkSlateGray",
+		"LimeGreen",
+		"MediumSeaGreen",
+		"Turquoise",
+		"RoyalBlue",
+		"SteelBlue",
+		"DarkSlateBlue",
+		"MediumTurquoise",
+		"Indigo",
+		"DarkOliveGreen",
+		"CadetBlue",
+		"CornflowerBlue",
+		"MediumAquaMarine");
+
+        for ($i = 0; $i < $this->no_of_teams; $i++) {
+
+            $this->teams[] = $colors[$i];
+
+        }
+//       $this->teams[] = $colors[0];
+//        $this->teams[] = $colors[1];
+//        $this->teams[] = $colors[2];
+//        $this->teams[] = $colors[3];
+//        $this->teams[] = $colors[4];
+//        $this->teams[] = $colors[5];
+//        $this->teams[] = $colors[6];
+//        $this->teams[] = $colors[7];
     }
+
 
     /**
      *
@@ -88,7 +155,7 @@ class CoinToss
             $this->players[] = array("name" => "Player_{$i}", "nice_name" => "Player {$i}", "teams" => $this->teams[$x]);
             $x ++;
             // Using $x for looping through team array, this needs to be reset once it reaches 8
-            if ($x == count($this->teams))
+            if ($x == $this->no_of_teams)
             {
                 $x = 0;
             }
@@ -112,6 +179,7 @@ class CoinToss
         }
     }
 
+
     /**
      *
      */
@@ -120,26 +188,26 @@ class CoinToss
 
         for ($i = 0; $i < count($this->results); $i++)
         {
-        foreach($this->results[$i] as $key => $value) { ?>
-            <h2><?php echo $key; ?></h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Game No.</th>
-                    <th>Player 1</th>
-                    <th>Team</th>
-                    <th>Coin Toss</th>
-                    <th>Player 2</th>
-                    <th>Team</th>
-                    <th>Coin Toss</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php //var_dump($value[0]); ?>
-                <?php $x = 1; foreach ($value as $game)
-            {
-                //var_dump($game);
-                echo "<tr>
+            foreach($this->results[$i] as $key => $value) { ?>
+                <h2><?php echo $key; ?></h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Game No.</th>
+                        <th>Player 1</th>
+                        <th>Team</th>
+                        <th>Coin Toss</th>
+                        <th>Player 2</th>
+                        <th>Team</th>
+                        <th>Coin Toss</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php //var_dump($value[0]); ?>
+                    <?php $x = 1; foreach ($value as $game)
+                    {
+                        //var_dump($game);
+                        echo "<tr>
                     <td>{$x}</td>
                     <td>{$game['player1_nicename']}</td>
                     <td style=\"background-color:{$game['player1_team']};\">{$game['player1_team']}</td>
@@ -149,11 +217,11 @@ class CoinToss
                     <td>{$game['player_2_toss']}</td>
                 </tr>";
 
-                $x++; } ?>
+                        $x++; } ?>
 
-                </tbody>
-            </table>
-        <?php } }
+                    </tbody>
+                </table>
+            <?php } }
 //        var_dump($this->results[0]);
     }
 
@@ -328,22 +396,22 @@ class Match extends CoinToss
         // The same team cant play itself!
         if ((strcmp($team_1 , $team_2) !== 0)) {
             // Need to check whether these teams have previously played in the last round
-        if ( (!in_array($this->players[$match_1]["name"]. "Vs" .$this->players[$match_2]["name"], $this->previous_round)) )
-        {
+            if ( (!in_array($this->players[$match_1]["name"]. "Vs" .$this->players[$match_2]["name"], $this->previous_round)) )
+            {
 
-            // Needed to add this to store the values of the players who have laready played a game
-            $this->played_games[] = $this->players[$match_1]["name"];
-            $this->played_games[] = $this->players[$match_2]["name"];
-            // Create an array of previous round matches
-            $this->previous_round[] = $this->players[$match_1]["name"] . "Vs" . $this->players[$match_2]["name"];
-            // e can now play the match and add to the competition array
-            $this->competition[] = $this->playMatch($match_1, $match_2);
-            // We need to remove the players from available array so that they cant compete again in this round
-            // As we are using array_rand instead of rand() we can now unset the players
-            unset($this->match_array[$match_1]);
-            unset($this->match_array[$match_2]);
-            //var_dump($this->previous_round);
-        }
+                // Needed to add this to store the values of the players who have laready played a game
+                $this->played_games[] = $this->players[$match_1]["name"];
+                $this->played_games[] = $this->players[$match_2]["name"];
+                // Create an array of previous round matches
+                $this->previous_round[] = $this->players[$match_1]["name"] . "Vs" . $this->players[$match_2]["name"];
+                // e can now play the match and add to the competition array
+                $this->competition[] = $this->playMatch($match_1, $match_2);
+                // We need to remove the players from available array so that they cant compete again in this round
+                // As we are using array_rand instead of rand() we can now unset the players
+                unset($this->match_array[$match_1]);
+                unset($this->match_array[$match_2]);
+                //var_dump($this->previous_round);
+            }
         } else {
             $this->playGames();
         }

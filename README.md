@@ -52,3 +52,12 @@ Still to do
 - Refactor code to remove duplication
 - Add more tests, this is still incomplete
 
+The play_match method needs re-writing, it needs to allow for more than one competitor. This could be done by create an Array of
+competitors using the array_rand()
+The passing the array into play_match()
+
+- Was also looking at outputting the results and previous round as a JSON file, this would allow for the file to be checked
+before a next round is played. We could also use the PHP standard libray and write a query.
+
+
+

@@ -27,7 +27,7 @@
 <?php
 //ini_set('xdebug.max_nesting_level', 500);
 include_once('src/CoinToss.php');
-$coin = new CoinToss(51, 2, 6);
+$coin = new CoinToss(51, 2, 6, 8);
 
 //var_dump($coin->getPlayers());
 //var_dump($coin->getTeams());
