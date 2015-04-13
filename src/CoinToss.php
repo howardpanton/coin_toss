@@ -1,43 +1,72 @@
 <?php
+
+/**
+ * Class CoinToss
+ * This Class runs a Coin Toss competition of 51 players over 6 rounds
+ * Each player is assigned a Team
+ * There are 8 teams
+ *
+ */
 class CoinToss
 {
 
     /**
-     * @var array
+     * @var $teams array
+     * Stores the team information
      * returns array
      */
     protected $teams = array();
 
-
+    /**
+     * @var $results array
+     * Stores the results from each match
+     */
     protected $results = array();
 
     /**
-     * @var array
-     *will use this to store the players array
+     * @var $players array
+     * Stores the player information
      * returns array
      */
     protected $players = array();
 
-    const MAX_PLAYERS = 51;
+    //const MAX_PLAYERS = 51;
 
-    const ROUNDS = 6;
+    public $max_players;
 
-    function __construct() {
+    public $competitors;
+
+    public $rounds;
+
+//    const ROUNDS = 6;
+
+
+    function __construct($max_players, $competitors, $rounds) {
+
+
+        $this->max_players = $max_players;
+
+        $this->competitors = $competitors;
+
+        $this->rounds = $rounds;
 
         // Create 8 teams
         $this->createTeams();
+
         // Create 51 players
         $this->createPlayers();
+
+        // Play each round
         $this->playRound();
-        //$test2 = new Match($this->players);
-        //var_dump($this->results);
+
+        // Output the results in a table
         $this->outputResults();
 
     }
 
 
     /**
-     *
+     * Create the Teams
      */
     public function createTeams()
     {
@@ -54,9 +83,9 @@ class CoinToss
         $x = 0;
 
         // Loop though and create players
-        for ($i = 1; $i < self::MAX_PLAYERS + 1; $i++)
+        for ($i = 1; $i < $this->max_players + 1; $i++)
         {
-            $this->players[] = array("name" => "Player_{$i}", "teams" => $this->teams[$x]);
+            $this->players[] = array("name" => "Player_{$i}", "nice_name" => "Player {$i}", "teams" => $this->teams[$x]);
             $x ++;
             // Using $x for looping through team array, this needs to be reset once it reaches 8
             if ($x == count($this->teams))
@@ -72,10 +101,10 @@ class CoinToss
      */
     public function playRound()
     {
-        for ($i = 0; $i < self::ROUNDS; $i++)
+        for ($i = 0; $i < $this->rounds; $i++)
         {
             $round = ($i + 1);
-            $test_{$round} = new Match($this->players);
+            $test_{$round} = new Match($this->players, $this->max_players, $this->competitors, $this->rounds);
 
             $this->results[] = array(
                 "Round {$round}" => $test_{$round}->competition
@@ -112,10 +141,10 @@ class CoinToss
                 //var_dump($game);
                 echo "<tr>
                     <td>{$x}</td>
-                    <td>{$game['player1']}</td>
+                    <td>{$game['player1_nicename']}</td>
                     <td style=\"background-color:{$game['player1_team']};\">{$game['player1_team']}</td>
                     <td>{$game['player_1_toss']}</td>
-                    <td>{$game['player2']}</td>
+                    <td>{$game['player2_nicename']}</td>
                     <td style=\"background-color:{$game['player2_team']};\">{$game['player2_team']}</td>
                     <td>{$game['player_2_toss']}</td>
                 </tr>";
@@ -182,15 +211,22 @@ class Match extends CoinToss
     /**
      *
      */
-    const MATCH_PLAYERS = 2;
+    //const MATCH_PLAYERS = 2;
+    public $competitors;
 
     /**
      * @param $players
      *
      */
-    function __construct($players) {
+    function __construct($players, $max_players, $competitors, $rounds) {
+
         $this->players = $players;
-        foreach (range(0, 50) as $number) {
+        $this->max_players = $max_players;
+        $this->competitors = $competitors;
+        $this->rounds = $rounds;
+
+        // Create an Array of players for each round of matches
+        foreach (range(0, $max_players - 1) as $number) {
             $this->match_array[] = $number;
         }
 
@@ -214,7 +250,7 @@ class Match extends CoinToss
      */
     public function playMatch($match_1, $match_2)
     {
-        $array = array("player1" => $this->players[$match_1]["name"], "player1_team" => $this->players[$match_1]["teams"], "player_1_toss" => $this->tossCoin(rand(0,1)),"player2" => $this->players[$match_2]["name"], "player2_team" => $this->players[$match_2]["teams"], "player_2_toss" => $this->tossCoin(rand(0,1)) );
+        $array = array("player1" => $this->players[$match_1]["name"], "player1_nicename" => $this->players[$match_1]["nice_name"], "player1_team" => $this->players[$match_1]["teams"], "player_1_toss" => $this->tossCoin(rand(0,1)),"player2" => $this->players[$match_2]["name"], "player2_nicename" => $this->players[$match_2]["nice_name"], "player2_team" => $this->players[$match_2]["teams"], "player_2_toss" => $this->tossCoin(rand(0,1)) );
         $this->previous_round[] = $this->players[$match_1]["name"]. "Vs" .$this->players[$match_2]["name"];
         return $array;
         //return $this->players[$match_1]["name"]. " (Team " . $this->players[$match_1]["teams"]. ") Vs " . $this->players[$match_2]["name"]. " (Team " . $this->players[$match_2]["teams"]. ")" ;
@@ -260,7 +296,7 @@ class Match extends CoinToss
         // outcome its either head or tails
         // maybe return result in JSON
         // Should use recursive functions
-        $total_matches = (int) floor(self::MAX_PLAYERS / self::MATCH_PLAYERS);
+        $total_matches = (int) floor($this->max_players / $this->competitors);
 
         // Loop through total matches and play games
         for ($i = 0; $i < $total_matches; $i++) {
